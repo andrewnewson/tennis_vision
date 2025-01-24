@@ -1,4 +1,5 @@
-# Large files
+# Extra files
+.vscode/
 yolov8x.pt
 runs/
 
