@@ -1,5 +1,6 @@
 # Large files
 yolov8x.pt
+runs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
