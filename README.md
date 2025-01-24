@@ -5,21 +5,21 @@ A computer vision project using YOLO for analysing tennis.
 ## Setup
 
 Clone the repository:
-'''bash
+```bash
 git clone https://github.com/andrewnewson/tennis_vision.git
 cd tennis_vision
-'''
+```
 
 Create virtual environment:
-'''bash
+```bash
 python -m venv .venv
 source venv\Scripts\activate
-'''
+```
 
 Install dependencies:
-'''bash
+```bash
 pip install -r requirements.txt
-'''
+```
 
 ## Usage
 
