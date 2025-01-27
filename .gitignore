@@ -2,6 +2,7 @@
 .vscode/
 yolov8x.pt
 runs/
+models/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
