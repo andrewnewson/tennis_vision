@@ -20,6 +20,9 @@ def main():
     court_detector = CourtDetector(model_path=court_model_path)
     court_keypoints = court_detector.predict(video_frames[0])
 
+    # Filter out players that are not on the court
+    player_detections = player_tracker.select_players_only(court_keypoints, player_detections)
+
     # Draw bounding boxes around players and ball
     output_video_frames = player_tracker.draw_bounding_boxes(video_frames, player_detections)
     output_video_frames = ball_tracker.draw_bounding_boxes(output_video_frames, ball_detections)

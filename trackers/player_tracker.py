@@ -1,11 +1,42 @@
 from ultralytics import YOLO
 import cv2
 import pickle
+import sys
+sys.path.append("../")
+from utils import *
 
 class PlayerTracker:
     def __init__(self, model_path):
         self.model = YOLO(model_path) # load yolo model from path
 
+    def select_players_only(self, court_keypoints, player_detections):
+        player_detections_first_frame = player_detections[0] # get player detections from the first frame
+        chosen_player = self.choose_player(court_keypoints, player_detections_first_frame) # choose a player based on court keypoints
+        filtered_player_detections = []
+        for player_dict in player_detections: # iterate through each player detection
+            filtered_player_dict = {track_id: bbox for track_id, bbox in player_dict.items() if track_id in chosen_player} # filter out players that are not chosen
+            filtered_player_detections.append(filtered_player_dict) # append the filtered player detections to the list
+
+        return filtered_player_detections
+
+    def choose_player(self, court_keypoints, player_dict):
+        distances = []
+        for track_id, bbox in player_dict.items(): # iterate through each player detection
+            player_centre = get_bbox_centre(bbox) # get the centre of the player bounding box
+
+            min_distance = float("inf")
+            for i in range(0, len(court_keypoints), 2):
+                court_keypoint = (court_keypoints[i], court_keypoints[i+1]) # get the court keypoint
+                distance = measure_distance(player_centre, court_keypoint) # calculate the distance between the player and the court keypoint
+                if distance < min_distance: # check if the distance is less than the minimum distance
+                    min_distance = distance # update the minimum distance
+            distances.append((track_id, min_distance)) # append the track id and distance to the list
+
+        distances.sort(key=lambda x: x[1]) # sort the distances in ascending order
+        chosen_players = [distances[0][0], distances[1][0]] # choose the two players with the smallest distances
+
+        return chosen_players
+            
     def detect_frames(self, frames, read_from_stub=False, stub_path=None):
         player_detections = []
 
