@@ -1,5 +1,6 @@
 from utils import *
 from trackers import *
+from court_detector import *
 
 def main():
     # Read video
@@ -13,9 +14,17 @@ def main():
     player_detections = player_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/player_detections.pkl")
     ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/ball_detections.pkl")
 
+    # Detect court lines
+    court_model_path = "models/court_keypoints_model.pth"
+    court_detector = CourtDetector(model_path=court_model_path)
+    court_keypoints = court_detector.predict(video_frames[0])
+
     # Draw bounding boxes around players and ball
     output_video_frames = player_tracker.draw_bounding_boxes(video_frames, player_detections)
-    output_video_frames = ball_tracker.draw_bounding_boxes(video_frames, ball_detections)
+    output_video_frames = ball_tracker.draw_bounding_boxes(output_video_frames, ball_detections)
+
+    # Draw court lines
+    output_video_frames = court_detector.draw_keypoints_on_video(output_video_frames, court_keypoints)
 
     # Save video with player detections and bounding boxes overlay
     save_video(output_video_frames, "output_media/output_video.avi")
