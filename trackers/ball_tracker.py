@@ -39,8 +39,8 @@ class BallTracker:
         for frame, ball_dict in zip(video_frames, ball_detections): # iterate through each frame and ball detection
             for track_id, bbox in ball_dict.items(): # iterate through each ball detection
                 x1, y1, x2, y2 = bbox # get the bounding box coordinates
-                cv2.putText(frame, f"Ball ID {track_id}", (int(bbox[0]), int(bbox[1]-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2) # add ball ID text to the frame
-                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2) # draw bounding box around ball
+                cv2.putText(frame, f"Ball ID {track_id}", (int(bbox[0]), int(bbox[1]-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2) # add ball ID text to the frame
+                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2) # draw bounding box around ball
             output_video_frames.append(frame) # append the frame with bounding boxes to the output list
 
         return output_video_frames
