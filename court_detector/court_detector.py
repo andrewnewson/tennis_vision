@@ -36,8 +36,8 @@ class CourtDetector:
             x = int(keypoints[i]) # get x coordinate
             y = int(keypoints[i+1]) # get y coordinate
 
-            cv2.putText(image, str(i//2), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 150, 150), 2) # add keypoint ID text to the frame
-            cv2.circle(image, (x, y), 5, (0, 150, 150), -1) # draw circle at keypoint location
+            cv2.putText(image, str(i//2), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2) # add keypoint ID text to the frame
+            cv2.circle(image, (x, y), 5, (0, 0, 0), -1) # draw circle at keypoint location
 
         return image
     
