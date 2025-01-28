@@ -13,6 +13,7 @@ def main():
 
     player_detections = player_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/player_detections.pkl")
     ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/ball_detections.pkl")
+    ball_detections = ball_tracker.interpolate_ball_position(ball_detections)
 
     # Detect court lines
     court_model_path = "models/court_keypoints_model.pth"
@@ -25,6 +26,10 @@ def main():
 
     # Draw court lines
     output_video_frames = court_detector.draw_keypoints_on_video(output_video_frames, court_keypoints)
+
+    # Add frame number to video
+    for i, frame in enumerate(output_video_frames):
+        cv2.putText(frame, f"Frame {i}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
 
     # Save video with player detections and bounding boxes overlay
     save_video(output_video_frames, "output_media/output_video.avi")
