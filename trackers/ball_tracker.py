@@ -16,6 +16,36 @@ class BallTracker:
         ball_positions = [{1: x} for x in df_ball_positions.to_numpy().tolist()] # convert the ball positions back to the original format
 
         return ball_positions
+    
+    def get_ball_hit_frames(self, ball_positions):
+        ball_positions = [x.get(1, []) for x in ball_positions] # get the ball positions from the ball detections
+        df_ball_positions = pd.DataFrame(ball_positions, columns=["x1", "y1", "x2", "y2"]) # create a dataframe from the ball positions
+        df_ball_positions['middle_y'] = (df_ball_positions['y1'] + df_ball_positions['y2']) / 2 # calculate the middle y position of the ball
+        df_ball_positions['middle_y_rolling_mean'] = df_ball_positions['middle_y'].rolling(window=5, min_periods=1, center=False).mean() # calculate the rolling mean of the middle y position of the ball
+        df_ball_positions['delta_y'] = df_ball_positions['middle_y_rolling_mean'].diff() # calculate the difference between the rolling mean of the middle y position of the ball
+        df_ball_positions['ball_hit'] = 0 # initialise a new column to store whether the ball has been hit
+        minimum_change_frames_for_hit = 25 # set the minimum number of frames for a hit to be detected
+        for i in range(1, len(df_ball_positions) - int(minimum_change_frames_for_hit*1.2)): # iterate through each frame
+            negative_position_change = df_ball_positions['delta_y'].iloc[i] > 0 and df_ball_positions['delta_y'].iloc[i+1] < 0 # check if the ball is moving upwards
+            positive_postion_change = df_ball_positions['delta_y'].iloc[i] < 0 and df_ball_positions['delta_y'].iloc[i+1] > 0 # check if the ball is moving downwards
+
+            if negative_position_change or positive_postion_change: # check if the ball is moving upwards or downwards
+                change_count = 0
+                for change_frame in range(i+1, i+int(minimum_change_frames_for_hit*1.2)+1): # iterate through the next frames
+                    negative_position_change_following_frame = df_ball_positions['delta_y'].iloc[i] > 0 and df_ball_positions['delta_y'].iloc[change_frame] < 0 # check if the ball is moving upwards in the next frame
+                    positive_postion_change_following_frame = df_ball_positions['delta_y'].iloc[i] < 0 and df_ball_positions['delta_y'].iloc[change_frame] > 0 # check if the ball is moving downwards in the next frame
+
+                    if negative_position_change and negative_position_change_following_frame: # check if the ball is moving upwards in the next frame
+                        change_count += 1
+                    elif positive_postion_change and positive_postion_change_following_frame: # check if the ball is moving downwards in the next frame
+                        change_count += 1
+                
+                if change_count >= minimum_change_frames_for_hit-1: # check if the ball has moved upwards or downwards for the minimum number of frames
+                    df_ball_positions.loc[i, 'ball_hit'] = 1 # set the ball hit column to 1 (avoiding setcopy warning)
+
+        hit_frame_numbers = df_ball_positions[df_ball_positions['ball_hit'] == 1].index.tolist() # get the frame numbers where the ball has been hit
+
+        return hit_frame_numbers
 
     def detect_frames(self, frames, read_from_stub=False, stub_path=None):
         ball_detections = []
