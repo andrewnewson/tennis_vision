@@ -37,6 +37,10 @@ def main():
     # Draw mini court graphic
     output_video_frames = mini_court_graphic.draw_mini_court(output_video_frames)
 
+    # Detect ball hits
+    ball_hit_frames = ball_tracker.get_ball_hit_frames(ball_detections)
+    print(ball_hit_frames)
+
     # Add frame number to video
     for i, frame in enumerate(output_video_frames):
         cv2.putText(frame, f"Frame {i}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
