@@ -27,6 +27,13 @@ def main():
     # Initialise mini court graphic
     mini_court_graphic = MiniCourtGraphic(video_frames[0])
 
+    # Detect ball hits
+    ball_hit_frames = ball_tracker.get_ball_hit_frames(ball_detections)
+    print(ball_hit_frames)
+
+    # Convert positions to mini court coordinates
+    player_mini_court_detections, ball_mini_court_detections = mini_court_graphic.convert_bounding_boxes_to_mini_court_coordinates(player_detections, ball_detections, court_keypoints)
+
     # Draw bounding boxes around players and ball
     output_video_frames = player_tracker.draw_bounding_boxes(video_frames, player_detections)
     output_video_frames = ball_tracker.draw_bounding_boxes(output_video_frames, ball_detections)
@@ -36,10 +43,8 @@ def main():
 
     # Draw mini court graphic
     output_video_frames = mini_court_graphic.draw_mini_court(output_video_frames)
-
-    # Detect ball hits
-    ball_hit_frames = ball_tracker.get_ball_hit_frames(ball_detections)
-    print(ball_hit_frames)
+    output_video_frames = mini_court_graphic.draw_points_on_mini_court(output_video_frames, player_mini_court_detections)
+    output_video_frames = mini_court_graphic.draw_points_on_mini_court(output_video_frames, ball_mini_court_detections, colour=(255, 0, 255))
 
     # Add frame number to video
     for i, frame in enumerate(output_video_frames):
