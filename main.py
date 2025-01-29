@@ -1,6 +1,7 @@
 from utils import *
 from trackers import *
 from court_detector import *
+from mini_court_graphic import *
 
 def main():
     # Read video
@@ -23,12 +24,18 @@ def main():
     # Filter out players that are not on the court
     player_detections = player_tracker.select_players_only(court_keypoints, player_detections)
 
+    # Initialise mini court graphic
+    mini_court_graphic = MiniCourtGraphic(video_frames[0])
+
     # Draw bounding boxes around players and ball
     output_video_frames = player_tracker.draw_bounding_boxes(video_frames, player_detections)
     output_video_frames = ball_tracker.draw_bounding_boxes(output_video_frames, ball_detections)
 
     # Draw court lines
     output_video_frames = court_detector.draw_keypoints_on_video(output_video_frames, court_keypoints)
+
+    # Draw mini court graphic
+    output_video_frames = mini_court_graphic.draw_mini_court(output_video_frames)
 
     # Add frame number to video
     for i, frame in enumerate(output_video_frames):
