@@ -23,3 +23,9 @@ pip install -r requirements.txt
 
 ## Usage
 
+
+
+## Suggestions for improvements
+- Use net post height instead of player heights to keep constant across videos/matches
+- Output shot metrics
+- Keypoint detection and object detection model refinements
