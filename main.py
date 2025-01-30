@@ -116,13 +116,13 @@ def main():
         cv2.putText(frame, f"Frame {i}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
 
     # Save video with player detections and bounding boxes overlay
-    dir_name, file_name = os.path.split(input_video_path)
+    _, file_name = os.path.split(input_video_path)
     name, _ = os.path.splitext(file_name)
-    output_video_path = os.path.join(dir_name, f"{name}_output.avi")
+    output_video_path = f"output_media/{name}_output.avi"
     save_video(output_video_frames, output_video_path)
 
     # Save player stats df
-    output_stats_path = os.path.join(dir_name, f"{name}_stats.csv")
+    output_stats_path = f"output_media/{name}_stats.csv"
     player_stats_data_df.to_csv(output_stats_path, index=False)
     print("Stats saved to:", output_stats_path)
 
