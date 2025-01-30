@@ -7,10 +7,10 @@ import numpy as np
 
 class MiniCourtGraphic():
     def __init__(self, frame):
-        self.drawing_rectangle_width = 250
-        self.drawing_rectangle_height = 500
-        self.border = 50
-        self.padding_court = 20
+        self.drawing_rectangle_width = 250 # width of the rectangle that the mini court will be drawn in
+        self.drawing_rectangle_height = 500 # height of the rectangle that the mini court will be drawn in
+        self.border = 50 # border around the rectangle
+        self.padding_court = 20 # padding around the court
 
         self.set_background_position(frame)
         self.set_mini_court_position()
@@ -23,44 +23,44 @@ class MiniCourtGraphic():
     def set_court_drawing_keypoints(self):
         drawing_keypoints = [0] * 28 # x, y for each of 14 keypoints
 
-        drawing_keypoints[0], drawing_keypoints[1] = int(self.court_start_x), int(self.court_start_y)
-        drawing_keypoints[2], drawing_keypoints[3] = int(self.court_end_x), int(self.court_start_y)
+        drawing_keypoints[0], drawing_keypoints[1] = int(self.court_start_x), int(self.court_start_y) # top left x, y
+        drawing_keypoints[2], drawing_keypoints[3] = int(self.court_end_x), int(self.court_start_y) # top right x, y
         
-        drawing_keypoints[4] = int(self.court_start_x)
-        drawing_keypoints[5] = self.court_start_y + self.convert_metres_to_pixels(constants.HALF_COURT_LENGTH*2)
+        drawing_keypoints[4] = int(self.court_start_x) # bottom left x
+        drawing_keypoints[5] = self.court_start_y + self.convert_metres_to_pixels(constants.HALF_COURT_LENGTH*2) # bottom left y
         
-        drawing_keypoints[6] = drawing_keypoints[0] + self.court_drawing_width
-        drawing_keypoints[7] = drawing_keypoints[5]
+        drawing_keypoints[6] = drawing_keypoints[0] + self.court_drawing_width # bottom right x
+        drawing_keypoints[7] = drawing_keypoints[5] # bottom right y
         
-        drawing_keypoints[8] = drawing_keypoints[0] + self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH)
-        drawing_keypoints[9] = drawing_keypoints[1]
+        drawing_keypoints[8] = drawing_keypoints[0] + self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH) # singles top left x
+        drawing_keypoints[9] = drawing_keypoints[1] # singles top left y
 
-        drawing_keypoints[10] = drawing_keypoints[4] + self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH)
-        drawing_keypoints[11] = drawing_keypoints[5]
+        drawing_keypoints[10] = drawing_keypoints[4] + self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH) # singles bottom left x
+        drawing_keypoints[11] = drawing_keypoints[5] # singles bottom left y
 
-        drawing_keypoints[12] = drawing_keypoints[2] - self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH)
-        drawing_keypoints[13] = drawing_keypoints[3]
+        drawing_keypoints[12] = drawing_keypoints[2] - self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH) # singles top right x
+        drawing_keypoints[13] = drawing_keypoints[3] # singles top right y
 
-        drawing_keypoints[14] = drawing_keypoints[6] - self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH)
-        drawing_keypoints[15] = drawing_keypoints[7]
+        drawing_keypoints[14] = drawing_keypoints[6] - self.convert_metres_to_pixels(constants.TRAM_LINE_WIDTH) # singles bottom right x
+        drawing_keypoints[15] = drawing_keypoints[7] # singles bottom right y
 
-        drawing_keypoints[16] = drawing_keypoints[8]
-        drawing_keypoints[17] = drawing_keypoints[9] + self.convert_metres_to_pixels(constants.SERVICE_BOX_TO_BASELINE_LENGTH)
+        drawing_keypoints[16] = drawing_keypoints[8] # service box top left x
+        drawing_keypoints[17] = drawing_keypoints[9] + self.convert_metres_to_pixels(constants.SERVICE_BOX_TO_BASELINE_LENGTH) # service box top left y
 
-        drawing_keypoints[18] = drawing_keypoints[16] + self.convert_metres_to_pixels(constants.SINGLE_COURT_WIDTH)
-        drawing_keypoints[19] = drawing_keypoints[17]
+        drawing_keypoints[18] = drawing_keypoints[16] + self.convert_metres_to_pixels(constants.SINGLE_COURT_WIDTH) # service box top right x
+        drawing_keypoints[19] = drawing_keypoints[17] # service box top right y
 
-        drawing_keypoints[20] = drawing_keypoints[10]
-        drawing_keypoints[21] = drawing_keypoints[11] - self.convert_metres_to_pixels(constants.SERVICE_BOX_TO_BASELINE_LENGTH)
+        drawing_keypoints[20] = drawing_keypoints[10] # service box bottom left x
+        drawing_keypoints[21] = drawing_keypoints[11] - self.convert_metres_to_pixels(constants.SERVICE_BOX_TO_BASELINE_LENGTH) # service box bottom left y
 
-        drawing_keypoints[22] = drawing_keypoints[20] + self.convert_metres_to_pixels(constants.SINGLE_COURT_WIDTH)
-        drawing_keypoints[23] = drawing_keypoints[21]
+        drawing_keypoints[22] = drawing_keypoints[20] + self.convert_metres_to_pixels(constants.SINGLE_COURT_WIDTH) # service box bottom right x
+        drawing_keypoints[23] = drawing_keypoints[21] # service box bottom right y
 
-        drawing_keypoints[24] = int((drawing_keypoints[16] + drawing_keypoints[18]) // 2)
-        drawing_keypoints[25] = drawing_keypoints[17]
+        drawing_keypoints[24] = int((drawing_keypoints[16] + drawing_keypoints[18]) // 2) # service box top middle x
+        drawing_keypoints[25] = drawing_keypoints[17] # service box top middle y
 
-        drawing_keypoints[26] = int((drawing_keypoints[20] + drawing_keypoints[22]) // 2)
-        drawing_keypoints[27] = drawing_keypoints[21]
+        drawing_keypoints[26] = int((drawing_keypoints[20] + drawing_keypoints[22]) // 2) # service box bottom middle x
+        drawing_keypoints[27] = drawing_keypoints[21] # service box bottom middle y
 
         self.court_drawing_keypoints = drawing_keypoints
 
