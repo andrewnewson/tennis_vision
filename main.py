@@ -3,24 +3,21 @@ from trackers import *
 from court_detector import *
 from mini_court_graphic import *
 from analysis import *
-from copy import deepcopy
-import pandas as pd
-import constants
 import os
 
 def main():
     # Read video
-    input_video_path = select_file()
-    if not input_video_path:
-        input_video_path = "input_media/input_video.mp4"
+    # input_video_path = select_file()
+    # if not input_video_path:
+    input_video_path = "input_media/input_video.mp4"
     video_frames = read_video(input_video_path)
 
     # Detect players and ball
-    player_tracker = PlayerTracker(model_path="models/yolov8x.pt")
-    ball_tracker = BallTracker(model_path="models/yolov5_ball_best.pt")
+    player_tracker = PlayerTracker(model_path="models/yolo11x.pt")
+    ball_tracker = BallTracker(model_path="models/yolov5_ball_best.pt") # yolov5 best best model
 
-    player_detections = player_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/player_detections.pkl")
-    ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=True, stub_path="tracker_stubs/ball_detections.pkl")
+    player_detections = player_tracker.detect_frames(video_frames, read_from_stub=False, stub_path="tracker_stubs/player_detections.pkl")
+    ball_detections = ball_tracker.detect_frames(video_frames, read_from_stub=False, stub_path="tracker_stubs/ball_detections.pkl")
     ball_detections = ball_tracker.interpolate_ball_position(ball_detections)
 
     # Detect court lines
