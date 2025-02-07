@@ -27,7 +27,7 @@ class PlayerTracker:
             min_distance = float("inf")
             for i in range(0, len(court_keypoints), 2):
                 court_keypoint = (court_keypoints[i], court_keypoints[i+1]) # get the court keypoint
-                distance = measure_distance(player_centre, court_keypoint) # calculate the distance between the player and the court keypoint
+                distance = measure_abs_distance(player_centre, court_keypoint) # calculate the distance between the player and the court keypoint
                 if distance < min_distance: # check if the distance is less than the minimum distance
                     min_distance = distance # update the minimum distance
             distances.append((track_id, min_distance)) # append the track id and distance to the list

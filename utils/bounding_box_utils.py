@@ -6,8 +6,8 @@ def get_bbox_centre(bbox):
 
     return (centre_x, centre_y)
 
-# Function to measure distance between two points
-def measure_distance(p1, p2):
+# Function to measure absolute distance between two points
+def measure_abs_distance(p1, p2):
     return ((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)**0.5 # calculate Euclidean distance between two points
 
 # Function to get foot position of player
@@ -29,9 +29,11 @@ def get_closest_keypoint_index(point, keypoints, keypoint_indices):
 
     return closest_keypoint_index
 
+# Calc difference between y coordinates to get height of box
 def get_height_of_bounding_box(bbox):
     x1, y1, x2, y2 = bbox
     return y2 - y1
 
+# Calc coordinate difference between two points
 def measure_xy_distance(p1, p2):
     return abs(p1[0] - p2[0]), abs(p1[1] - p2[1])
